@@ -2,14 +2,13 @@ name: Deploy Harshit Portfolio To Github Pages
 on:
   push:
     branches: ["main"]
-    
+
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
-
 
 concurrency:
   group: "pages"
@@ -36,11 +35,11 @@ jobs:
       - name: Get pnpm store directory
         shell: bash
         run: |
-         echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB
-      
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
       - name: Setup pnpm cache
         uses: actions/cache@v3
-        with: 
+        with:
           path: ${{env.STORE_PATH}}
           key: ${{runner.os}}-pnpm-store-${{hashFiles('**/pnpm-lock.yaml')}}
           restore-keys: |
@@ -55,7 +54,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload everything from dist only
-          path: './dist'
+          path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
